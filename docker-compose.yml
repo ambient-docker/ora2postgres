@@ -1,0 +1,34 @@
+version: '3'
+
+networks:
+ prodnetwork:
+    driver: bridge
+
+volumes:
+  oracle_data:
+    driver: local
+
+services:
+ ora2pg:
+   hostname: ora2pg
+   build: ./ora2pg
+   command: tail -f /dev/null
+   links:
+     - oracle-11g:ora
+   depends_on:
+     - oracle-11g
+   networks:
+     - prodnetwork
+
+ oracle-11g:
+  hostname: oracle
+  build: ./oracle-xe-11g
+  ports:
+    - "11521:1521"
+    - "2222:2:2"
+    - "18090:8080"
+  networks:
+    - prodnetwork
+  volumes:
+    - oracle_data:/u01
+

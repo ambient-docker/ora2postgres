@@ -1,0 +1,5 @@
+---
+- hosts: sys
+  become: true
+  roles:
+    - install-migrate 
